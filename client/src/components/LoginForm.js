@@ -27,7 +27,7 @@ const LoginForm = () => {
       Auth.login(data.login.token);
     } catch (e) {
       console.error(e);
-      setShowAlert(true);
+      // setShowAlert(true);
     }
 
     // clear form values
@@ -56,12 +56,6 @@ const LoginForm = () => {
     //   console.error(err);
     //   setShowAlert(true);
     // }
-
-    setUserFormData({
-      username: "",
-      email: "",
-      password: "",
-    });
   };
 
   return (
@@ -112,6 +106,7 @@ const LoginForm = () => {
           Submit
         </Button>
       </Form>
+      {error && <div>Login failed</div>}
     </>
   );
 };
