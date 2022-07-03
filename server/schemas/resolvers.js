@@ -7,7 +7,7 @@ const resolvers = {
     me: async (parent, args, context) => {
       // console.log(context);
       if (context.user) {
-        console.log("there is a user");
+        // console.log("there is a user");
         const userData = await User.findOne({ _id: context.user._id }).select(
           "-__v -password"
         );
