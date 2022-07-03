@@ -15,7 +15,7 @@ import { SAVE_BOOK } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
 
 const SearchBooks = () => {
-  const [saveBook, { error }] = useMutation(SAVE_BOOK);
+  const [saveBook] = useMutation(SAVE_BOOK);
   const [searchedBooks, setSearchedBooks] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
@@ -66,10 +66,10 @@ const SearchBooks = () => {
 
     try {
       const { data } = await saveBook({
-        variables: { bookdetails: bookToSave },
+        variables: { bookdetail: bookToSave },
       });
-
-      if (error) {
+      console.log(data);
+      if (!data) {
         throw new Error("Something went wrong!");
       }
 

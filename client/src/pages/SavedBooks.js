@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
+// import { useParams } from "react-router-dom";
 import Auth from "../utils/auth";
 import {
   Jumbotron,
@@ -20,6 +20,7 @@ const SavedBooks = () => {
   const [deleteBook] = useMutation(REMOVE_BOOK);
   const userData = data?.me || {};
 
+  // console.log(data);
   if (!userData?.username) {
     return <h4>You need to be logged in!</h4>;
   }
@@ -33,29 +34,19 @@ const SavedBooks = () => {
     }
 
     try {
-      await deleteBook({
-        variables: { bookId: bookId },
-        update: (cache) => {
-          const data = cache.readQuery({ query: GET_ME });
-          const userDataCache = data.me;
-          const savedBooksCache = userDataCache.savedBooks;
-          const updatedBookCache = savedBooksCache.filter(
-            (book) => book.bookId !== bookId
-          );
-          data.me.savedBooks = updatedBookCache;
-          cache.writeQuery({
-            query: GET_ME,
-            data: { data: { ...data.me.savedBooks } },
-          });
-        },
+      const { data } = await deleteBook({
+        variables: { bookId },
       });
-      // upon success, remove book's id from localStorage
+
+      if (!data) {
+        throw new Error("Something went wrong!");
+      }
+
       removeBookId(bookId);
     } catch (err) {
       console.error(err);
     }
   };
-
   if (loading) {
     return <h2>LOADING...</h2>;
   }
